@@ -14,14 +14,14 @@ class Hyperparams:
     restore = False
 
     # pipeline
-    vocab = "PE abcdefghijklmnopqrstuvwxyz'.?" # P: Padding E: End of Sentence
+    vocab = "PE abcdefghijklmnopqrstuvwxyz'.?"  # P: Padding E: End of Sentence
 
     # data
     source = "LJSpeech"
-    cleaners = "korean_cleaners" # cleaner to be used for tokenizing Korean
+    cleaners = "korean_cleaners"  # cleaner to be used for tokenizing Korean
 
     # data = "/home/dabsdamoon/w/projects/tacotron/LJ_data/LJSpeech-1.1"
-    data = 'drive/MyDrive/voice_data/LJSpeech/'
+    data = 'tacotron/LJSpeech-1.1'
     # data_korean = "/home/dabsdamoon/w/projects/tacotron2/korean-single-speaker-speech-dataset"
 
     max_duration = 10.0
