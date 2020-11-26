@@ -20,7 +20,7 @@ class Hyperparams:
     source = "LJSpeech"
     cleaners = "korean_cleaners"  # cleaner to be used for tokenizing Korean
 
-    data = "drive/MyDrive/voice_data/LJSpeech-1.1"
+    data = "drive/MyDrive/voice_data/LJSpeech"
     # data = 'tacotron/LJSpeech-1.1'
     # data_korean = "/home/dabsdamoon/w/projects/tacotron2/korean-single-speaker-speech-dataset"
 
@@ -62,7 +62,7 @@ class Hyperparams:
 
     # training scheme
     lr = 0.001 # Initial learning rate.
-    log_dir = "log"
+    log_dir = "drive/MyDrive/voice_data/LJSpeech/tacotron1_log"
     model_dir = "drive/MyDrive/voice_data/LJSpeech/tacotron1_saved"
     batch_size = 16
     batches_per_group = 32
