@@ -63,7 +63,7 @@ class Hyperparams:
     # training scheme
     lr = 0.001 # Initial learning rate.
     log_dir = "log"
-    model_dir = "model_saved"
+    model_dir = "drive/MyDrive/voice_data/LJSpeech/tacotron1_saved"
     batch_size = 16
     batches_per_group = 32
 
