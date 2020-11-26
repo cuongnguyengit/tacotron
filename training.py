@@ -181,6 +181,7 @@ def training(dataloader, hp):
                     tf.summary.audio("Test Voice", spectrogram2wav(z_hat[0].numpy()).reshape((1,-1, 1)), sample_rate=hp.sr, step = step_index)
 
                     print('Time taken for every 100th batch: {} secn (total: {} batches)'.format(time.time() - start, step_index))
+                    print(f'Step{step_index} Loss1{loss1} Loss2{loss2}')
                     start = time.time()
 
             ##### Save model weights
