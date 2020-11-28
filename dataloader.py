@@ -22,10 +22,10 @@ class DataLoader:
         self.maxlen = maxlen
 
         # Open different transcript based on type of source
-        if hp.source == "korean":
-            transcript = os.path.join(hp.data_korean,  "transcript.v.1.3.txt") # For KSS dataset (https://www.kaggle.com/bryanpark/korean-single-speaker-speech-dataset/version/1)
-            self.lines = codecs.open(transcript, 'r', 'utf-8').readlines()
-
+        if hp.source == "vivos":
+            transcript = os.path.join(hp.data,  "prompts.txt")
+            with open(transcript, 'r', encoding='utf-8') as rf:
+                self.lines = rf.readlines()
         else:
             transcript = os.path.join(hp.data, 'metadata.csv')
             self.lines = codecs.open(transcript, 'r', 'utf-8').readlines()
