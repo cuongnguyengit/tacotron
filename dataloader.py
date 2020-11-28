@@ -119,8 +119,12 @@ class DataLoader:
             if hp.source == "vivos":
                 temp = line.split()
                 fname = temp[0]
+
+                f1 = fname.split('_')[0]
+                # f2 = fname.split('_')[1]
+
                 text = ' '.join(temp[1:])
-                fpath = os.path.join(hp.data, "waves", fname)
+                fpath = os.path.join(hp.data, "waves", f1, fname + '.wav')
                 text = self.text_normalize(text)
                 # text = cleaners.korean_cleaners(text)
 
