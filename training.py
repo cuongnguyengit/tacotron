@@ -5,16 +5,18 @@ import subprocess
 import tensorflow as tf
 import time
 from tqdm import tqdm
-
+import sys
 ##### Import custom module
 from hyperparams import Hyperparams as hp
 from utils import *
 from dataloader import *
 from modules import *
-from kor_text.symbols import symbols
+# from kor_text.symbols import symbols
+import random
+
 
 ##### Define models
-def training(dataloader, hp):
+def training(dataloader, hp, dl_test=None):
     
     ##### Define encoder
     encoder = get_encoder(hp)
@@ -90,7 +92,7 @@ def training(dataloader, hp):
                 ##### Compute memory and initla state for decoder
                 memory, memory_state, memory_mask = encoder(x)
 
-                plot_length = tf.reduce_sum(tf.cast(memory_mask, tf.int32), axis = 1).numpy()
+                plot_length = tf.reduce_sum(tf.cast(memory_mask, tf.int32), axis=1).numpy()
 
                 ##### Define decoder input and initial state
                 decoder1_input_init = tf.zeros_like(y[:,0,:])
@@ -184,40 +186,89 @@ def training(dataloader, hp):
                     print(f'Step{step_index} Loss1{loss1} Loss2{loss2}')
                     start = time.time()
 
-            ##### Save model weights
-            if step_index % 1000 == 0:
 
-                model_list = ["encoder", "decoder1", "decoder2"]
+            # if step_index % 1000 == 0:
+        ##### Save model weights per 1 epoch
+        model_list = ["encoder", "decoder1", "decoder2"]
 
-                ##### Creating directory
-                if not os.path.exists(hp.model_dir):
-                    os.mkdir(hp.model_dir)
+        ##### Creating directory
+        if not os.path.exists(hp.model_dir):
+            os.mkdir(hp.model_dir)
 
-                for m in model_list:
-                    if not os.path.exists(os.path.join(hp.model_dir, m)):
-                        os.mkdir(os.path.join(hp.model_dir, m))
+        for m in model_list:
+            if not os.path.exists(os.path.join(hp.model_dir, m)):
+                os.mkdir(os.path.join(hp.model_dir, m))
 
-                encoder.save_weights(os.path.join(hp.model_dir, "encoder/weights_{}".format(step_index)))
-                decoder1.save_weights(os.path.join(hp.model_dir, "decoder1/weights_{}".format(step_index)))
-                decoder2.save_weights(os.path.join(hp.model_dir, "decoder2/weights_{}".format(step_index)))
+        encoder.save_weights(os.path.join(hp.model_dir, "encoder/weights_{}".format(step_index)))
+        decoder1.save_weights(os.path.join(hp.model_dir, "decoder1/weights_{}".format(step_index)))
+        decoder2.save_weights(os.path.join(hp.model_dir, "decoder2/weights_{}".format(step_index)))
 
+        # val
+        ##### Compute memory and initla state for decoder
+        if dl_test is not None:
+            total_loss = 0
+            dem = 0
+            for x, y, z in dl_test.loader:
+                dem += 1
+                memory, memory_state, memory_mask = encoder(x)
+                decoder1_input_init = tf.zeros_like(y[:, 0, :])
+                decoder1_attn_state = decoder1.attention_cell.get_initial_state(memory)
+                decoder1_decoder_state = decoder1.decoder_cell.get_initial_state(memory)
+                initial_alignments = decoder1._initial_alignments(x.shape[0],
+                                                                  x.shape[1],
+                                                                  dtype=tf.float32)
+                # Create a list of states
+                decoder1_state = [decoder1_attn_state,
+                                  decoder1_decoder_state,
+                                  initial_alignments,
+                                  memory,
+                                  memory_mask]
+
+                decoder1_input = decoder1_input_init
+                decoder1_output = []
+                for t in range(y.shape[1]):  # Iterate based on timestep of the batch (the longest timestep within batch)
+                    d, decoder1_state = decoder1(decoder1_input,
+                                                 decoder1_state)
+                    ##### Appending mel-spectogram feature prediction
+                    decoder1_output.append(d)
+                    ##### Upldate input and attention plot
+                    decoder1_input = y[:, t, :]
+
+                ##### Calculate losses (mel-spectrogram)
+                y_hat = tf.concat(decoder1_output, axis=1)
+                loss1 = tf.reduce_mean(tf.abs(y_hat - y))  # Mel-spectrogram loss
+                z_hat = decoder2(y_hat)
+                loss2 = tf.reduce_mean(tf.abs(z_hat - z))  # Linear-spectrogram loss
+
+                total_loss += loss1 + loss2
+            total_loss /= dem
+            print(f'Val Loss: {total_loss}')
         n_epoch += 1
 
 if __name__ == "__main__":
-
+    try:
+        hp.source = sys.argv[1]
+    except:
+        print('NON ARGV')
     ##### Choose the source
     # hp.source = "korean"
+    hp.use_monotonic = True
+    hp.normalize_attention = True
     
     # Set hp.vocab; originally for LJSpeech (English) dataset. If Korean, symbols need to be changed
     if hp.source == "LJSpeech":
         dl = DataLoader(hp)
+        training(dl, hp)
     else:
-        hp.vocab = symbols
+        hp.vocab = "PE abcdeghijklmnopqrstuvxy'.?ạảãàáâậầấẩẫăắằặẳẵóòọõỏôộổỗồốơờớợởỡéèẻẹẽêếềệểễúùụủũưựữửừứíìịỉĩýỳỷỵỹđ"
+        hp.data += 'train/'
         dl = DataLoader(hp)
+        hp.data.replace('train/', 'test/')
+        dl_test = DataLoader(hp)
+        training(dl, hp, dl_test)
 
     ##### Choose type of attention mechanism; I chose monotonic normalized attention mechanism since it seems faster than regular one.
-    hp.use_monotonic = True
-    hp.normalize_attention = True
+
     
     ##### Train
-    training(dl, hp)
+    # training(dl, hp)

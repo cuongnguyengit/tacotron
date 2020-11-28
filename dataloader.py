@@ -96,9 +96,10 @@ class DataLoader:
         return char2idx, idx2char
 
     ##### Function for text normalizing
+    # @staticmethod
     def text_normalize(self, text):
-        text = ''.join(char for char in unicodedata.normalize('NFD', text)
-                            if unicodedata.category(char) != 'Mn') # Strip accents
+        # text = ''.join(char for char in unicodedata.normalize('NFD', text)
+        #                     if unicodedata.category(char) != 'Mn') # Strip accents
 
         text = text.lower()
         text = re.sub("[^{}]".format(hp.vocab), " ", text)
@@ -115,11 +116,13 @@ class DataLoader:
         for i, line in enumerate(self.lines):
 
             # Case when using Korean
-            if hp.source == "korean":
-                fname, _, text, _, _, _  = line.split("|")
-                fpath = os.path.join(hp.data_korean, "kss", fname)
+            if hp.source == "vivos":
+                temp = line.split()
+                fname = temp[0]
+                text = ' '.join(temp[1:])
+                fpath = os.path.join(hp.data, "waves", fname)
                 text = self.text_normalize(text)
-                text = cleaners.korean_cleaners(text)
+                # text = cleaners.korean_cleaners(text)
 
             # Case when using English
             else:
@@ -161,3 +164,6 @@ class DataLoader:
         fname, mel, mag = self._spectrogram_map(fpath)
         
         return text_decoded, mel, mag
+
+# if __name__ == '__main__':
+#     print(DataLoader.text_normalize('cho tôi hỏi'))
