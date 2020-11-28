@@ -257,11 +257,12 @@ if __name__ == "__main__":
     
     # Set hp.vocab; originally for LJSpeech (English) dataset. If Korean, symbols need to be changed
     if hp.source == "LJSpeech":
+        hp.data += hp.source + '/'
         dl = DataLoader(hp)
         training(dl, hp)
     else:
         hp.vocab = "PE abcdeghijklmnopqrstuvxy'.?ạảãàáâậầấẩẫăắằặẳẵóòọõỏôộổỗồốơờớợởỡéèẻẹẽêếềệểễúùụủũưựữửừứíìịỉĩýỳỷỵỹđ"
-        hp.data += 'train/'
+        hp.data += hp.source + '/train/'
         dl = DataLoader(hp)
         hp.data.replace('train/', 'test/')
         dl_test = DataLoader(hp)

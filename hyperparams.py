@@ -22,7 +22,7 @@ class Hyperparams:
     cleaners = "korean_cleaners"  # cleaner to be used for tokenizing Korean
 
     # data = "drive/MyDrive/voice_data/LJSpeech"
-    data = "drive/MyDrive/voice_data/vivos/"
+    data = "drive/MyDrive/voice_data/"
     # data = 'tacotron/LJSpeech-1.1'
     # data_korean = "/home/dabsdamoon/w/projects/tacotron2/korean-single-speaker-speech-dataset"
 
