@@ -252,6 +252,7 @@ if __name__ == "__main__":
         print('SETTING SOURCE DATA FAIL')
     hp.log_dir += hp.source + '/tacotron1_log'
     hp.model_dir += hp.source + '/tacotron1_saved'
+    print(hp.model_dir)
     try:
         hp.restore = int(sys.argv[2]) == 1
     except:
