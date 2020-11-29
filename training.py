@@ -249,12 +249,18 @@ if __name__ == "__main__":
     try:
         hp.source = sys.argv[1]
     except:
-        print('NON ARGV')
-
+        print('SETTING SOURCE DATA FAIL')
+    hp.log_dir += hp.source + '/tacotron1_log'
+    hp.model_dir += hp.source + '/tacotron1_saved'
     try:
         hp.restore = sys.argv[2] == 1
     except:
-        print('NON ARGV')
+        print('SETTING RESTORE FAIL')
+
+    try:
+        hp.batch_size = int(sys.argv[3])
+    except:
+        print('SETTING BATCH SIZE FAIL')
     ##### Choose the source
     # hp.source = "korean"
     hp.use_monotonic = True
