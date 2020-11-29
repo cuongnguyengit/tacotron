@@ -9,7 +9,7 @@ from dataloader import *
 from hyperparams import Hyperparams as hp
 from modules import *
 from utils import text_normalize
-
+from IPython.display import Audio
 
 ##### Define function for synthesis
 
@@ -140,6 +140,7 @@ def synthesizing(text_to_synthesize,
         audio_synth = spectrogram2wav(m.numpy())
         write("./synthesis_{}/audio_synth_{}.wav".format(step_index, text_to_synthesize), hp.sr, audio_synth)
 
+        Audio(url="./synthesis_{}/audio_synth_{}.wav".format(step_index, text_to_synthesize))
         ind += 1
 
 
