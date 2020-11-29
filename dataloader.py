@@ -32,7 +32,7 @@ class DataLoader:
 
         self.n_data = len(self.lines)
 
-        self.fpaths, self.text_lengths, self.texts = self.load_data() # list
+        self.fpaths, self.text_lengths, self.texts = self.load_data()  # list
 
         ##### Get total number of batches
         self.total_batch_num = len(self.fpaths) // self.batch_size
@@ -40,7 +40,7 @@ class DataLoader:
         ##### Sort based on text length
         self.fpath_text_dict = {l: self.texts[i] for i, l in enumerate(self.fpaths)}
         self.fpaths = self._sort_by_others(self.fpaths, self.text_lengths)
-        self.texts = [self.fpath_text_dict[f] for f in self.fpaths] # Done in this way to avoid wrong sortings among same length elements
+        self.texts = [self.fpath_text_dict[f] for f in self.fpaths]  # Done in this way to avoid wrong sortings among same length elements
 
         ##### Then, convert to tensor
         self.text_lengths = tf.convert_to_tensor(self.text_lengths)
@@ -49,10 +49,11 @@ class DataLoader:
 
         ##### Create dataloader
         concated_tensors = tf.concat([tf.expand_dims(self.fpaths, 1),
-                                      tf.expand_dims(self.texts, 1)], axis = 1)
+                                      tf.expand_dims(self.texts, 1)], axis=1)
 
-        self.loader = tf.data.Dataset.from_tensor_slices(concated_tensors).map(lambda x: self._mapping(x)).padded_batch(self.batch_size,
-                                                                                                                        padded_shapes = ([None], [None, None], [None, None]))
+        self.loader = tf.data.Dataset.from_tensor_slices(concated_tensors).\
+            map(lambda x: self._mapping(x)).\
+            padded_batch(self.batch_size, padded_shapes=([None], [None, None], [None, None]))
 
 
     ##### Function for ordering

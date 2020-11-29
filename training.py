@@ -182,7 +182,7 @@ def training(dataloader, hp, dl_test=None):
                     tf.summary.audio("Test Voice", spectrogram2wav(z_hat[0].numpy()).reshape((1,-1, 1)), sample_rate=hp.sr, step = step_index)
 
                     print('Time taken for every 100th batch: {} secn (total: {} batches)'.format(time.time() - start, step_index))
-                    print(f'Step{step_index} Loss1{loss1} Loss2{loss2}')
+                    print(f'Step {step_index} Loss1: {loss1} Loss2: {loss2}')
                     start = time.time()
 
 
@@ -278,6 +278,7 @@ if __name__ == "__main__":
         dl = DataLoader(hp)
         hp.data.replace('train/', 'test/')
         dl_test = DataLoader(hp)
+        print(type(dl.loader))
         training(dl, hp, dl_test)
 
     ##### Choose type of attention mechanism; I chose monotonic normalized attention mechanism since it seems faster than regular one.
