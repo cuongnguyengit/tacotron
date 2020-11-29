@@ -252,7 +252,7 @@ if __name__ == "__main__":
         print('NON ARGV')
 
     try:
-        hp.source = sys.argv[2] == 1
+        hp.restore = sys.argv[2] == 1
     except:
         print('NON ARGV')
     ##### Choose the source
