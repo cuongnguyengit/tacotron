@@ -250,6 +250,11 @@ if __name__ == "__main__":
         hp.source = sys.argv[1]
     except:
         print('NON ARGV')
+
+    try:
+        hp.source = sys.argv[2] == 1
+    except:
+        print('NON ARGV')
     ##### Choose the source
     # hp.source = "korean"
     hp.use_monotonic = True
