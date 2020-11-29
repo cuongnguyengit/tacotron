@@ -253,7 +253,7 @@ if __name__ == "__main__":
     hp.log_dir += hp.source + '/tacotron1_log'
     hp.model_dir += hp.source + '/tacotron1_saved'
     try:
-        hp.restore = sys.argv[2] == 1
+        hp.restore = int(sys.argv[2]) == 1
     except:
         print('SETTING RESTORE FAIL')
 
