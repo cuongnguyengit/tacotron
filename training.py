@@ -262,6 +262,11 @@ if __name__ == "__main__":
         hp.batch_size = int(sys.argv[3])
     except:
         print('SETTING BATCH SIZE FAIL')
+
+    try:
+        hp.data = str(sys.argv[4])
+    except:
+        print('SETTING DATA DIR FAIL')
     ##### Choose the source
     # hp.source = "korean"
     hp.use_monotonic = True
