@@ -57,9 +57,8 @@ def training(dataloader, hp, dl_test=None):
         print("===== Model restoration complete (step_index = {} // n_epoch = {})".format(step_index, n_epoch))
 
     else:
-        subprocess.run(["rm", "-rf", "./{}".format(hp.log_dir)])
-        subprocess.run(["rm", "-rf", "./{}".format(hp.model_dir)])
-
+        # subprocess.run(["rm", "-rf", "./{}".format(hp.log_dir)])
+        # subprocess.run(["rm", "-rf", "./{}".format(hp.model_dir)])
         n_epoch = 1
         step_index = 0
         
