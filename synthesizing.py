@@ -22,6 +22,7 @@ def synthesizing(text_to_synthesize,
     The purpose of getting dataloader is not to use actual data but to use some parameters in it.
     """
     dl = DataLoader(hp)
+    dl.char2idx, dl.idx2char = dl.load_vocab()
 
     for x, y, z in dl.loader:
         break
