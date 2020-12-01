@@ -30,7 +30,7 @@ def synthesizing(text_to_synthesize,
 
     # Case when using Korean
     if hp.source == "vivos":
-        text = text_normalize(text_to_synthesize, hp)
+        text = dl.text_normalize(text_to_synthesize)
         # text = cleaners.korean_cleaners(text)
 
     # Case when using English
