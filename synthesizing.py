@@ -36,9 +36,9 @@ def synthesizing(text_to_synthesize,
     # Case when using English
     else:
         text = text_normalize(text_to_synthesize, hp) + "E"  # E: EOS; end of the sentence            
-
+    print(text)
     texts_synth = [dl.char2idx[char] for char in text]
-
+    print(texts_synth)
     ##### Reload model and weights trained
     encoder = get_encoder(hp)
 

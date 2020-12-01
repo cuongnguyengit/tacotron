@@ -91,6 +91,7 @@ class DataLoader:
 
 
     ##### Function to get dictionaries for indexing characters
+    # @staticmethod
     def load_vocab(self):
         char2idx = {char: idx for idx, char in enumerate(hp.vocab)}
         idx2char = {idx: char for idx, char in enumerate(hp.vocab)}
