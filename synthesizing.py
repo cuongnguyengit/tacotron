@@ -125,6 +125,7 @@ def synthesizing(text_to_synthesize,
 
     ##### Calculate loss1 (mel-spectrogram)
     mag_synth = decoder2(mel_synth)
+    print(mag_synth)
 
     ##### Saving soundfile and attention plot
     if not os.path.exists("synthesis_{}".format(step_index)):
