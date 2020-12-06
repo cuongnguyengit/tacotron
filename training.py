@@ -185,22 +185,24 @@ def training(dataloader, hp, dl_test=None):
                     print(f'Step {step_index} Loss1: {loss1} Loss2: {loss2}')
                     start = time.time()
 
+                ##### Save model weights per 1 epoch
+                model_list = ["encoder", "decoder1", "decoder2"]
+
+                ##### Creating directory
+                if not os.path.exists(hp.model_dir):
+                    os.mkdir(hp.model_dir)
+
+                for m in model_list:
+                    if not os.path.exists(os.path.join(hp.model_dir, m)):
+                        os.mkdir(os.path.join(hp.model_dir, m))
+
+                encoder.save_weights(os.path.join(hp.model_dir, "encoder/weights_{}".format(step_index)))
+                decoder1.save_weights(os.path.join(hp.model_dir, "decoder1/weights_{}".format(step_index)))
+                decoder2.save_weights(os.path.join(hp.model_dir, "decoder2/weights_{}".format(step_index)))
+
 
             # if step_index % 1000 == 0:
-        ##### Save model weights per 1 epoch
-        model_list = ["encoder", "decoder1", "decoder2"]
 
-        ##### Creating directory
-        if not os.path.exists(hp.model_dir):
-            os.mkdir(hp.model_dir)
-
-        for m in model_list:
-            if not os.path.exists(os.path.join(hp.model_dir, m)):
-                os.mkdir(os.path.join(hp.model_dir, m))
-
-        encoder.save_weights(os.path.join(hp.model_dir, "encoder/weights_{}".format(step_index)))
-        decoder1.save_weights(os.path.join(hp.model_dir, "decoder1/weights_{}".format(step_index)))
-        decoder2.save_weights(os.path.join(hp.model_dir, "decoder2/weights_{}".format(step_index)))
 
         # val
         ##### Compute memory and initla state for decoder
