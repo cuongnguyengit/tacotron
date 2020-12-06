@@ -14,8 +14,8 @@ class Hyperparams:
     restore = False
 
     # pipeline
-    # vocab = "PE abcdefghijklmnopqrstuvwxyz'.?"  # P: Padding E: End of Sentence
-    vocab = "PE abcdeghijklmnopqrstuvxy'.?"  # P: Padding E: End of Sentence
+    vocab = "PE abcdefghijklmnopqrstuvwxyz'.?"  # P: Padding E: End of Sentence
+    # vocab = "PE abcdeghijklmnopqrstuvxy'.?"  # P: Padding E: End of Sentence
     # data
     # source = "LJSpeech"
     source = "vivos"
