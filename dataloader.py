@@ -28,16 +28,19 @@ class DataLoader:
             texts = []
             for r, d, f in os.walk(hp.data):
                 for file in f:
-                    if file.endswith(".txt"):
-                        print(os.path.join(r, file))
-                        with open(os.path.join(r, file), 'r', encoding='utf-8') as rf:
-                            text = rf.read().strip()
-                            text = [self.char2idx[char] for char in text]
-                            fpath = os.path.join(r, file).replace('.txt', '.wav')
-                        # Appending
-                        fpaths.append(fpath)
-                        text_lengths.append(len(text))
-                        texts.append(np.array(text, np.int32).tostring())
+                    try:
+                        if file.endswith(".txt"):
+                            print(os.path.join(r, file))
+                            with open(os.path.join(r, file), 'r', encoding='utf-8') as rf:
+                                text = rf.read().strip()
+                                text = [self.char2idx[char] for char in text]
+                                fpath = os.path.join(r, file).replace('.txt', '.wav')
+                            # Appending
+                            fpaths.append(fpath)
+                            text_lengths.append(len(text))
+                            texts.append(np.array(text, np.int32).tostring())
+                    except Exception as e:
+                        print(file, e)
 
         else:
             transcript = os.path.join(hp.data, 'metadata.csv')
