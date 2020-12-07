@@ -117,24 +117,21 @@ class DataLoader:
 
         for i, line in enumerate(self.lines):
 
-            # Case when using Korean
-            if hp.source == "vivos":
-                temp = line.split()
-                fname = temp[0]
-
-                f1 = fname.split('_')[0]
-                # f2 = fname.split('_')[1]
-
-                text = ' '.join(temp[1:])
-                fpath = os.path.join(hp.data, "waves", f1, fname + '.wav')
-                text = self.text_normalize(text)
-                # text = cleaners.korean_cleaners(text)
-
             # Case when using English
+            if hp.source == "LJSpeech":
+                fname, _, text = line.strip().split("|")
+                fpath = os.path.join(hp.data, "wavs", fname + ".wav")
+                text = self.text_normalize(text) + "E"  # E: EOS; end of the sentence
+            # Case when using Vietnamese
             else:
                 fname, _, text = line.strip().split("|")
                 fpath = os.path.join(hp.data, "wavs", fname + ".wav")
-                text = self.text_normalize(text) + "E"  # E: EOS; end of the sentence            
+                text = self.text_normalize(text)
+                # text = cleaners.korean_cleaners(text)
+
+            if not os.path.exists(fpath):
+                print(fpath)
+                continue
 
             text = [self.char2idx[char] for char in text]
 
