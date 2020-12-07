@@ -41,14 +41,14 @@ class DataLoader:
                             texts.append(np.array(text, np.int32).tostring())
                     except Exception as e:
                         print(file, e)
+            self.fpaths, self.text_lengths, self.texts = fpaths, text_lengths, texts
+            self.n_data = len(self.fpaths)
 
         else:
             transcript = os.path.join(hp.data, 'metadata.csv')
             self.lines = codecs.open(transcript, 'r', 'utf-8').readlines()
-
-        self.n_data = len(self.lines)
-
-        self.fpaths, self.text_lengths, self.texts = self.load_data()  # list
+            self.n_data = len(self.lines)
+            self.fpaths, self.text_lengths, self.texts = self.load_data()  # list
 
         ##### Get total number of batches
         self.total_batch_num = len(self.fpaths) // self.batch_size
