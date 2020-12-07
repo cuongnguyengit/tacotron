@@ -185,6 +185,7 @@ def training(dataloader, hp, dl_test=None):
                     print(f'Step {step_index} Loss1: {loss1} Loss2: {loss2}')
                     start = time.time()
 
+            if step_index % 1000 == 0:
                 ##### Save model weights per 1 epoch
                 model_list = ["encoder", "decoder1", "decoder2"]
 
@@ -252,8 +253,16 @@ if __name__ == "__main__":
         hp.source = sys.argv[1]
     except:
         print('SETTING SOURCE DATA FAIL')
+    if not os.path.exists(os.path.join(hp.model_dir, hp.source)):
+        os.mkdir(os.path.join(hp.model_dir, hp.source))
     hp.log_dir += hp.source + '/tacotron1_log'
     hp.model_dir += hp.source + '/tacotron1_saved'
+    if not os.path.exists(os.path.join(hp.model_dir)):
+        os.mkdir(os.path.join(hp.model_dir))
+
+    if not os.path.exists(os.path.join(hp.log_dir)):
+        os.mkdir(os.path.join(hp.log_dir))
+
     print(hp.model_dir)
     try:
         hp.restore = int(sys.argv[2]) == 1
@@ -280,7 +289,7 @@ if __name__ == "__main__":
         dl = DataLoader(hp)
         training(dl, hp)
     else:
-        hp.vocab = "PE abcdeghijklmnopqrstuvxy'.?ạảãàáâậầấẩẫăắằặẳẵóòọõỏôộổỗồốơờớợởỡéèẻẹẽêếềệểễúùụủũưựữửừứíìịỉĩýỳỷỵỹđ"
+        hp.vocab = "PE abcdeghiklmnopqrstuvxy'.?ạảãàáâậầấẩẫăắằặẳẵóòọõỏôộổỗồốơờớợởỡéèẻẹẽêếềệểễúùụủũưựữửừứíìịỉĩýỳỷỵỹđ"
         hp.data += hp.source + '/'
         dl = DataLoader(hp)
         training(dl, hp)
