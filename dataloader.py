@@ -22,10 +22,23 @@ class DataLoader:
         self.maxlen = maxlen
 
         # Open different transcript based on type of source
-        if hp.source == "vivos":
-            transcript = os.path.join(hp.data,  "prompts.txt")
-            with open(transcript, 'r', encoding='utf-8') as rf:
-                self.lines = rf.readlines()
+        if hp.source == "vlsp2020":
+            fpaths = []
+            text_lengths = []
+            texts = []
+            for r, d, f in os.walk(hp.data):
+                for file in f:
+                    if file.endswith(".txt"):
+                        print(os.path.join(r, file))
+                        with open(os.path.join(r, file), 'r', encoding='utf-8') as rf:
+                            text = rf.read().strip()
+                            text = [self.char2idx[char] for char in text]
+                            fpath = os.path.join(r, file).replace('.txt', '.wav')
+                        # Appending
+                        fpaths.append(fpath)
+                        text_lengths.append(len(text))
+                        texts.append(np.array(text, np.int32).tostring())
+
         else:
             transcript = os.path.join(hp.data, 'metadata.csv')
             self.lines = codecs.open(transcript, 'r', 'utf-8').readlines()
