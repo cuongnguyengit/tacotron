@@ -127,10 +127,10 @@ def training(dataloader, hp, dl_test=None):
 
                 ##### Calculate losses (mel-spectrogram)
                 y_hat = tf.concat(decoder1_output, axis = 1)
-                loss1 = tf.reduce_mean(tf.abs(y_hat - y)) # Mel-spectrogram loss
+                loss1 = tf.reduce_mean(tf.abs(y_hat - y))  # Mel-spectrogram loss
 
                 z_hat = decoder2(y_hat)
-                loss2 = tf.reduce_mean(tf.abs(z_hat - z)) # Linear-spectrogram loss
+                loss2 = tf.reduce_mean(tf.abs(z_hat - z))  # Linear-spectrogram loss
 
                 loss = loss1 + loss2    
 
@@ -281,12 +281,9 @@ if __name__ == "__main__":
         training(dl, hp)
     else:
         hp.vocab = "PE abcdeghijklmnopqrstuvxy'.?ạảãàáâậầấẩẫăắằặẳẵóòọõỏôộổỗồốơờớợởỡéèẻẹẽêếềệểễúùụủũưựữửừứíìịỉĩýỳỷỵỹđ"
-        hp.data += hp.source + '/train/'
+        hp.data += hp.source + '/'
         dl = DataLoader(hp)
-        hp.data.replace('train/', 'test/')
-        dl_test = DataLoader(hp)
-        print(type(dl.loader))
-        training(dl, hp, dl_test)
+        training(dl, hp)
 
     ##### Choose type of attention mechanism; I chose monotonic normalized attention mechanism since it seems faster than regular one.
 
