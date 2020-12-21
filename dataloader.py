@@ -35,6 +35,8 @@ class DataLoader:
                                 text = rf.read().strip()
                                 text = [self.char2idx[char] for char in text]
                                 fpath = os.path.join(r, file).replace('.txt', '.wav')
+                                if not os.path.exists(fpath):
+                                    continue
                             # Appending
                             fpaths.append(fpath)
                             text_lengths.append(len(text))
