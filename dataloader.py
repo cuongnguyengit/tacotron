@@ -20,7 +20,7 @@ class DataLoader:
 
         self.batch_size = hp.batch_size
         self.maxlen = maxlen
-
+        self.char2idx, self.idx2char = self.load_vocab()
         # Open different transcript based on type of source
         if hp.source == "vlsp2020":
             fpaths = []
@@ -128,9 +128,6 @@ class DataLoader:
 
     ##### Function for preprocessing 
     def load_data(self):
-
-        self.char2idx, self.idx2char = self.load_vocab()
-
         fpaths, text_lengths, texts = [], [], []
 
         for i, line in enumerate(self.lines):
