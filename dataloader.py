@@ -34,7 +34,7 @@ class DataLoader:
                             with open(os.path.join(r, file), 'r', encoding='utf-8') as rf:
                                 line = rf.read().strip()
                                 if '|' in line:
-                                    text = rf.read().split('|')[-1].strip()
+                                    text = rf.read().split('|')[1]
                                 else:
                                     text = line
                                 text = [self.char2idx[char] for char in text]
@@ -45,7 +45,7 @@ class DataLoader:
                             fpaths.append(fpath)
                             text_lengths.append(len(text))
                             texts.append(np.array(text, np.int32).tostring())
-                            print(os.path.join(r, file), len(text), text)
+                            print(os.path.join(r, file), len(text), text, line)
                     except Exception as e:
                         print(file, e)
             self.fpaths, self.text_lengths, self.texts = fpaths, text_lengths, texts
