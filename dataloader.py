@@ -34,7 +34,7 @@ class DataLoader:
                             with open(os.path.join(r, file), 'r', encoding='utf-8') as rf:
                                 line = rf.read().strip()
                                 if '|' in line:
-                                    text = rf.read().split('|')[1]
+                                    text = line.split('|')[-1]
                                 else:
                                     text = line
                                 text = [self.char2idx[char] for char in text]
