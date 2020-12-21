@@ -45,6 +45,7 @@ class DataLoader:
                             fpaths.append(fpath)
                             text_lengths.append(len(text))
                             texts.append(np.array(text, np.int32).tostring())
+                            print(os.path.join(r, file), len(text), text)
                     except Exception as e:
                         print(file, e)
             self.fpaths, self.text_lengths, self.texts = fpaths, text_lengths, texts
