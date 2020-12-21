@@ -289,7 +289,7 @@ if __name__ == "__main__":
         dl = DataLoader(hp)
         training(dl, hp)
     else:
-        hp.vocab = "abcdeghiklmnopqrstuvxy' ,.?ạảãàáâậầấẩẫăắằặẳẵóòọõỏôộổỗồốơờớợởỡéèẻẹẽêếềệểễúùụủũưựữửừứíìịỉĩýỳỷỵỹđ"
+        hp.vocab = "abcdeghiklmnopqrstuvxy' ,.-?ạảãàáâậầấẩẫăắằặẳẵóòọõỏôộổỗồốơờớợởỡéèẻẹẽêếềệểễúùụủũưựữửừứíìịỉĩýỳỷỵỹđ"
         # hp.data += hp.source + '/'
         dl = DataLoader(hp)
         training(dl, hp)

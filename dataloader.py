@@ -32,7 +32,11 @@ class DataLoader:
                         if file.endswith(".txt"):
                             # print(os.path.join(r, file))
                             with open(os.path.join(r, file), 'r', encoding='utf-8') as rf:
-                                text = rf.read().split('|')[-1].strip()
+                                line = rf.read().strip()
+                                if '|' in line:
+                                    text = rf.read().split('|')[-1].strip()
+                                else:
+                                    text = line
                                 text = [self.char2idx[char] for char in text]
                                 fpath = os.path.join(r, file).replace('.txt', '.wav')
                                 if not os.path.exists(fpath):
