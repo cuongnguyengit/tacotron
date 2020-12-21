@@ -30,7 +30,7 @@ class DataLoader:
                 for file in f:
                     try:
                         if file.endswith(".txt"):
-                            print(os.path.join(r, file))
+                            # print(os.path.join(r, file))
                             with open(os.path.join(r, file), 'r', encoding='utf-8') as rf:
                                 text = rf.read().split('|')[-1].strip()
                                 text = [self.char2idx[char] for char in text]
