@@ -1,76 +1,81 @@
-# Tacotron with Tensorflow 2.0
-Implementation of tacotron (TTS) with Tensorflow 2.0.0 heavily inspired by: </br>
+# Tacotron 2 (without wavenet)
 
-General structure of algorithm: https://github.com/Kyubyong/tacotron </br>
-Training in Korean: https://github.com/hccho2/Tacotron2-Wavenet-Korean-TTS </br>
-Attention: https://www.tensorflow.org/tutorials/text/nmt_with_attention </br>
+PyTorch implementation of [Natural TTS Synthesis By Conditioning
+Wavenet On Mel Spectrogram Predictions](https://arxiv.org/pdf/1712.05884.pdf). 
 
-Notice that I haven't used tensorflow_addon library since it doesn't seem to be fully compatible with Tensorflow >= 2.0.0. </br>
-Also, I added an option to choose between regular and monotonic attention since monotonic attention shows faster convergences in both language cases. For more information about monotonic attention, visit https://arxiv.org/abs/1704.00784 or https://vimeo.com/240608543 if you prefer presentation </br>
+This implementation includes **distributed** and **automatic mixed precision** support
+and uses the [LJSpeech dataset](https://keithito.com/LJ-Speech-Dataset/).
 
-## Requirements
-* Python=3.7
-* tensorflow-gpu >= 2.0.0
-* librosa
-* tqdm
-* matplotlib
-* jamo
-* unidecode
-* inflect
+Distributed and Automatic Mixed Precision support relies on NVIDIA's [Apex] and [AMP].
 
-## Data
-For English, I've used LJSpeech 1.1 dataset (https://keithito.com/LJ-Speech-Dataset/). </br>
-For Korean, I've used KSS dataset (https://www.kaggle.com/bryanpark/korean-single-speaker-speech-dataset). </br>
+Visit our [website] for audio samples using our published [Tacotron 2] and
+[WaveGlow] models.
+
+![Alignment, Predicted Mel Spectrogram, Target Mel Spectrogram](tensorboard.png)
+
+
+## Pre-requisites
+1. NVIDIA GPU + CUDA cuDNN
+
+## Setup
+1. Download and extract the [LJ Speech dataset](https://keithito.com/LJ-Speech-Dataset/)
+2. Clone this repo: `git clone https://github.com/NVIDIA/tacotron2.git`
+3. CD into this repo: `cd tacotron2`
+4. Initialize submodule: `git submodule init; git submodule update`
+5. Update .wav paths: `sed -i -- 's,DUMMY,ljs_dataset_folder/wavs,g' filelists/*.txt`
+    - Alternatively, set `load_mel_from_disk=True` in `hparams.py` and update mel-spectrogram paths 
+6. Install [PyTorch 1.0]
+7. Install [Apex]
+8. Install python requirements or build docker image 
+    - Install python requirements: `pip install -r requirements.txt`
 
 ## Training
+1. `python train.py --output_directory=outdir --log_directory=logdir`
+2. (OPTIONAL) `tensorboard --logdir=outdir/logdir`
 
-First, set your parameters (including directory, language, etc) in hyperparams.py. For generating examples, I set "use_monotonic" and "normalize_attention" parameter as True. </br>
-Then, you can just run training.py file as follows: </br>
-<pre>
-<code> 
-python training.py 
-</code>
-</pre>
+## Training using a pre-trained model
+Training using a pre-trained model can lead to faster convergence  
+By default, the dataset dependent text embedding layers are [ignored]
 
-## Result
-To show some example results, I trained with both English and Korean dataset applying Bahdanau monotonic attention with normalization.
-Results of training English data (LJSpeech) are given below: </br>
-![Alt Text](https://github.com/dabsdamoon/gif_save/blob/master/tacotron_English.gif) </br>
-![Alt Text](https://github.com/dabsdamoon/gif_save/blob/master/tacotron_English_mel.png)
-![Alt Text](https://github.com/dabsdamoon/gif_save/blob/master/tacotron_English_linear.png) </br>
-</br>
+1. Download our published [Tacotron 2] model
+2. `python train.py --output_directory=outdir --log_directory=logdir -c tacotron2_statedict.pt --warm_start`
 
-Results of training Korean data (KSS) are given below: </br>
-![Alt Text](https://github.com/dabsdamoon/gif_save/blob/master/tacotron_Korean.gif) </br>
-![Alt Text](https://github.com/dabsdamoon/gif_save/blob/master/tacotron_Korean_mel.png)
-![Alt Text](https://github.com/dabsdamoon/gif_save/blob/master/tacotron_Korean_linear.png) </br>
+## Multi-GPU (distributed) and Automatic Mixed Precision Training
+1. `python -m multiproc train.py --output_directory=outdir --log_directory=logdir --hparams=distributed_run=True,fp16_run=True`
 
-Both algorithms have been trained for roughly 15 hours.
+## Inference demo
+1. Download our published [Tacotron 2] model
+2. Download our published [WaveGlow] model
+3. `jupyter notebook --ip=127.0.0.1 --port=31337`
+4. Load inference.ipynb 
 
-## Sample Synthesis
+N.b.  When performing Mel-Spectrogram to Audio synthesis, make sure Tacotron 2
+and the Mel decoder were trained on the same mel-spectrogram representation. 
 
-First, set your parameters in hyperparams.py. Note that you need to set "use_monotonic" and "normalize_attention" parameter as True if you have trained the algorithm in such way. Then, use the function "synthesizing" to generate the sentence you want. </br>
 
-<pre>
-<code>
-synthesizing("The boy was there when the sun rose", hp)
-synthesizing("오늘 점심은 쌀국수 한그릇 먹고싶네요", hp)
-</code>
-</pre>
+## Related repos
+[WaveGlow](https://github.com/NVIDIA/WaveGlow) Faster than real time Flow-based
+Generative Network for Speech Synthesis
 
-Finally, run synthesizing.py with console command:
+[nv-wavenet](https://github.com/NVIDIA/nv-wavenet/) Faster than real time
+WaveNet.
 
-<pre>
-<code> 
-python synthesizing.py 
-</code>
-</pre>
+## Acknowledgements
+This implementation uses code from the following repos: [Keith
+Ito](https://github.com/keithito/tacotron/), [Prem
+Seetharaman](https://github.com/pseeth/pytorch-stft) as described in our code.
 
-For audio samples, I uploaded synthesized English sentence of "The boy was there when the sun rose" and Korean sentence of "오늘 점심은 쌀국수 한그릇 먹고싶네요" in a folder "sample_synthesis". The algorithm has been trained 77000 steps for English (roughly 40 hours), and 67000 steps for Korean (roughly 15 hours). </br> 
+We are inspired by [Ryuchi Yamamoto's](https://github.com/r9y9/tacotron_pytorch)
+Tacotron PyTorch implementation.
 
-## Notes
-* Although I tried to convert Kyubyoung's Tensorflow 1.12 code to Tensorflow 2.0 code as it is, there may be some differences between mine and Kyubyoung's. I'd appreciate if you notice differences and inform me. Also, since I directly implemented Kyubyoung's code, differences from the original paper are also implemented.
-* As I have mentioned earlier, training Korean dataset takes quite less time than training English dataset. Thus, if you can understand both languages, you may notice that Korean synthesizing result sounds better than English one. The English result will be better if you spend more time on training.
-* Any comments on improving codes or questions are welcome, but it may take some time for me to respond.
+We are thankful to the Tacotron 2 paper authors, specially Jonathan Shen, Yuxuan
+Wang and Zongheng Yang.
 
-April 2020, Dabin Moon
+
+[WaveGlow]: https://drive.google.com/open?id=1rpK8CzAAirq9sWZhe9nlfvxMF1dRgFbF
+[Tacotron 2]: https://drive.google.com/file/d/1c5ZTuT7J08wLUoVZ2KkUs_VdZuJ86ZqA/view?usp=sharing
+[pytorch 1.0]: https://github.com/pytorch/pytorch#installation
+[website]: https://nv-adlr.github.io/WaveGlow
+[ignored]: https://github.com/NVIDIA/tacotron2/blob/master/hparams.py#L22
+[Apex]: https://github.com/nvidia/apex
+[AMP]: https://github.com/NVIDIA/apex/tree/master/apex/amp
