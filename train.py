@@ -275,6 +275,11 @@ if __name__ == '__main__':
                         required=False, help='comma separated name=value pairs')
 
     args = parser.parse_args()
+
+    os.makedirs(args.output_directory, exist_ok=True)
+
+    os.makedirs(args.log_directory, exist_ok=True)
+
     hparams = create_hparams(args.hparams)
 
     torch.backends.cudnn.enabled = hparams.cudnn_enabled
