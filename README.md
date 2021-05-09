@@ -1,4 +1,4 @@
-# Tacotron 2 (without wavenet)
+# A CLONE OF author [NVIDIA Github](https://github.com/NVIDIA/tacotron2). I will try to complete Vietnamese Version (vlsp dataset) soon. 
 
 PyTorch implementation of [Natural TTS Synthesis By Conditioning
 Wavenet On Mel Spectrogram Predictions](https://arxiv.org/pdf/1712.05884.pdf). 
