@@ -11,12 +11,9 @@ except:
 
 def get_symbols(name):
     if name == 'char':
-        _pad         = '_'
-        _punctuation = '!\'(),.:;? '
-        _special     = '-'
-        _letters     = 'aáảàãạâấẩầẫậăắẳằẵặbcdđeéẻèẽẹêếểềễệfghiíỉìĩịjklmnoóỏòõọôốổồỗộơớởờỡợpqrstuúủùũụưứửừữựvwxyýỷỳỹỵz'
-        _silences    = ["@sp", "@spn", "@sil"]
-        symbols      = [_pad] + list(_special) + list(_punctuation) + list(_letters) + _silences
+        _punctuation = ' !,.;?'
+        _letters = 'aáảàãạâấẩầẫậăắẳằẵặbcdđeéẻèẽẹêếểềễệghiíỉìĩịklmnoóỏòõọôốổồỗộơớởờỡợpqrstuúủùũụưứửừữựvxyýỷỳỹỵ'
+        symbols = list(_punctuation) + list(_letters)
     elif name == 'phoneme':
         _punctuation = ' !,.;?'
         symbols = list(_punctuation) + ['@' + i for i in list_phones]

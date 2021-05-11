@@ -26,12 +26,12 @@ def create_hparams(hparams_string=None, verbose=False):
         # Data Parameters             #
         ################################
         load_mel_from_disk=False,
-        # training_files='/content/vlsp2020/vlsp_audio_text_train_filelist.txt',
-        # validation_files='/content/vlsp2020/vlsp_audio_text_val_filelist.txt',
-        # text_cleaners=['basic_cleaners'],
-        training_files='/content/vlsp2020/train.txt',
-        validation_files='/content/vlsp2020/val.txt',
-        text_cleaners=['vn_cleaners'],
+        training_files='/content/vlsp2020/vlsp_audio_text_train_filelist.txt',
+        validation_files='/content/vlsp2020/vlsp_audio_text_val_filelist.txt',
+        text_cleaners=['basic_cleaners'],
+        # training_files='/content/vlsp2020/train.txt',
+        # validation_files='/content/vlsp2020/val.txt',
+        # text_cleaners=['vn_cleaners'],
 
 
         ################################
@@ -49,10 +49,10 @@ def create_hparams(hparams_string=None, verbose=False):
         ################################
         # Model Parameters             #
         ################################
-        # level='char',
-        # n_symbols=len(get_symbols('char')),
-        level='phoneme',
-        n_symbols=len(get_symbols('phoneme')),
+        level='char',
+        n_symbols=len(get_symbols('char')),
+        # level='phoneme',
+        # n_symbols=len(get_symbols('phoneme')),
         symbols_embedding_dim=512,
 
         # Encoder parameters
