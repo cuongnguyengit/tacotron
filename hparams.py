@@ -29,7 +29,9 @@ def create_hparams(hparams_string=None, verbose=False):
         # training_files='/content/vlsp2020/vlsp_audio_text_train_filelist.txt',
         # validation_files='/content/vlsp2020/vlsp_audio_text_val_filelist.txt',
         # text_cleaners=['basic_cleaners'],
-        text_cleaners=[],
+        training_files='/content/vlsp2020/train.txt',
+        validation_files='/content/vlsp2020/val.txt',
+        text_cleaners=['vn_cleaners'],
 
 
         ################################
@@ -87,7 +89,7 @@ def create_hparams(hparams_string=None, verbose=False):
         learning_rate=1e-3,
         weight_decay=1e-6,
         grad_clip_thresh=1.0,
-        batch_size=16,
+        batch_size=64,
         mask_padding=True  # set model's padded outputs to padded values
     )
 
