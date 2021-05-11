@@ -1,5 +1,5 @@
 import tensorflow as tf
-from text import symbols
+from text import get_symbols
 
 
 def create_hparams(hparams_string=None, verbose=False):
@@ -26,9 +26,11 @@ def create_hparams(hparams_string=None, verbose=False):
         # Data Parameters             #
         ################################
         load_mel_from_disk=False,
-        training_files='/content/vlsp2020/vlsp_audio_text_train_filelist.txt',
-        validation_files='/content/vlsp2020/vlsp_audio_text_val_filelist.txt',
-        text_cleaners=['basic_cleaners'],
+        # training_files='/content/vlsp2020/vlsp_audio_text_train_filelist.txt',
+        # validation_files='/content/vlsp2020/vlsp_audio_text_val_filelist.txt',
+        # text_cleaners=['basic_cleaners'],
+        text_cleaners=[],
+
 
         ################################
         # Audio Parameters             #
@@ -45,7 +47,10 @@ def create_hparams(hparams_string=None, verbose=False):
         ################################
         # Model Parameters             #
         ################################
-        n_symbols=len(symbols),
+        # level='char',
+        # n_symbols=len(get_symbols('char')),
+        level='phoneme',
+        n_symbols=len(get_symbols('phoneme')),
         symbols_embedding_dim=512,
 
         # Encoder parameters

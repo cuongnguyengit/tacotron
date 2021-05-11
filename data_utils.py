@@ -5,7 +5,7 @@ import torch.utils.data
 
 import layers
 from utils import load_wav_to_torch, load_filepaths_and_text
-from text import text_to_sequence
+from text import CustomText
 
 
 class TextMelLoader(torch.utils.data.Dataset):
@@ -24,6 +24,7 @@ class TextMelLoader(torch.utils.data.Dataset):
             hparams.filter_length, hparams.hop_length, hparams.win_length,
             hparams.n_mel_channels, hparams.sampling_rate, hparams.mel_fmin,
             hparams.mel_fmax)
+        self.ct = CustomText(hparams.level)
         random.seed(hparams.seed)
         random.shuffle(self.audiopaths_and_text)
 
@@ -54,7 +55,7 @@ class TextMelLoader(torch.utils.data.Dataset):
         return melspec
 
     def get_text(self, text):
-        text_norm = torch.IntTensor(text_to_sequence(text, self.text_cleaners))
+        text_norm = torch.IntTensor(self.ct.text_to_sequence(text, self.text_cleaners))
         return text_norm
 
     def __getitem__(self, index):
