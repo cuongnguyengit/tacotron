@@ -49,10 +49,10 @@ def create_hparams(hparams_string=None, verbose=False):
         ################################
         # Model Parameters             #
         ################################
-        level='char',
-        n_symbols=len(get_symbols('char')),
-        # level='phoneme',
-        # n_symbols=len(get_symbols('phoneme')),
+        # level='char',
+        # n_symbols=len(get_symbols('char')),
+        level='phoneme',
+        n_symbols=len(get_symbols('phoneme')),
         symbols_embedding_dim=512,
 
         # Encoder parameters
